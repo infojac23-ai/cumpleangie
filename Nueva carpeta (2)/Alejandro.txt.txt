@@ -1,0 +1,98 @@
+-- ============================================
+
+-- EXAMEN BASES DE DATOS - TIENDA DEPORTES
+
+-- Alumno: [Alejandro Liñán] 
+
+-- ============================================
+
+-- ===== APARTADO 1
+
+-- ESCRIBE TU CÓDIGO AQUÍ );
+CREATE DATABASE IF NOT EXISTS tienda_de_deportes;
+
+use tienda_de_deportes;
+
+
+-- TABLA CLIENTE
+CREATE TABLE IF NOT EXISTS cliente  (
+	dniCliente VARCHAR(9),
+	nombreCliente VARCHAR(100) NOT NULL,
+	telefono INT NOT NULL,
+	fecha_alta DATETIME NOT NULL,
+	puntos_fidelidad INT DEFAULT 0,
+	CONSTRAINT pk_cliente PRIMARY KEY (dniCliente),
+	CONSTRAINT unq_telefono_cliente UNIQUE KEY (telefono),
+	CONSTRAINT chk_puntos_fidelidad_Cliente CHECK (puntos_fidelidad >=0 AND puntos_fidelidad <100000)
+);
+
+-- ESCRIBE TU CÓDIGO DE VERIFICACIÓN AQUÍ );
+desc cliente;
+
+
+-- TABLA ARTICULO
+CREATE TABLE IF NOT EXISTS articulo (
+	codArticulo INT AUTO_INCREMENT,
+	nombreArticulo VARCHAR(100) NOT NULL,
+	stockArticulo INT DEFAULT 0,
+	precioArticulo DECIMAL(6,2) NOT NULL,
+	deporte ENUM ('Fútbol', 'Baloncesto', 'Tenis', 'Running', 'Natación', 'Ciclismo') NOT NULL,
+	CONSTRAINT pk_articulo PRIMARY KEY (codArticulo),
+	CONSTRAINT chk_precio_articulo CHECK (precioArticulo > 0)
+);
+
+-- ESCRIBE TU CÓDIGO DE VERIFICACIÓN AQUÍ );
+desc articulo;
+
+-- TABLA VENTA
+CREATE TABLE IF NOT EXISTS venta (
+	idVenta INT AUTO_INCREMENT,
+	cliente_dni VARCHAR(100) NOT NULL,
+	fechaVenta DATETIME NOT NULL,
+	estadoVenta ENUM('pagada', 'pendiente_pago', 'procesando', 'enviada', 'devuelta', 'cancelada') DEFAULT 'pendiente_pago' NOT NULL,
+	cliente_dni_Venta VARCHAR(9) NOT NULL,
+	CONSTRAINT pk_venta PRIMARY KEY (idVenta),
+	CONSTRAINT fk_cliente_dni_venta FOREIGN KEY (cliente_dni_venta) REFERENCES cliente(dniCliente)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE 
+);
+
+-- ESCRIBE TU CÓDIGO DE VERIFICACIÓN AQUÍ );
+desc venta;
+
+-- TABLA LINEA_VENTA
+CREATE TABLE IF NOT EXISTS linea_Venta(
+	venta_id_linea INT,
+	articulo_codigo_Linea INT,
+	cantidad INT NOT NULL,
+	precio_venta DECIMAL (6,2) NOT NULL,
+	CONSTRAINT pk_LineaVenta PRIMARY KEY (venta_id_linea,articulo_codigo_Linea),
+	CONSTRAINT chk_cantidad_LineaVenta CHECK (cantidad > 0),
+	CONSTRAINT fk_venta_id_linea_venta FOREIGN KEY (venta_id_linea) REFERENCES venta(idVenta)
+		ON DELETE CASCADE,
+	CONSTRAINT fk_articulo_codigo_Linea_articulo FOREIGN KEY (articulo_codigo_Linea) REFERENCES articulo(codArticulo)
+		ON DELETE RESTRICT
+);
+-- ESCRIBE TU CÓDIGO DE VERIFICACIÓN AQUÍ );
+
+desc linea_Venta;
+-- ===== APARTADO 2
+
+
+-- INSERT CLIENTE
+
+INSERT INTO cliente VALUES
+('11111111A','Jose','675619087','2020-11-10',2),
+('22222222E','Willy','234234234','2020-07-21',0),
+('77777777b','Carmen','456456456','2020-12-22',1),
+('77777777G','Pedro','867867867','2020-11-22',4),
+('55555555F','Yuli','898989898','2020-11-22',4),
+('22222222O','Alejandro','901231231','2020-10-02',3);
+
+
+
+ ESCRIBE TU CÓDIGO DE VERIFICACIÓN AQUÍ );
+
+ ESCRIBE TU CÓDIGO AQUÍ );
+
+ ESCRIBE TU CÓDIGO DE VERIFICACIÓN AQUÍ );
