@@ -18,7 +18,7 @@ body{
 }
 canvas{position:fixed;top:0;left:0;z-index:-1;}
 
-/* SECCIÓN DEL LIBRO */
+/* SECCIÓN DEL LIBRO (Intacta) */
 .book-section{height:100vh;display:flex;justify-content:center;align-items:center;perspective:2000px;}
 .book{width:320px;height:420px;background:#ff5ecf;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,0.3);position:relative;cursor:pointer;animation:float 4s ease-in-out infinite;}
 .book::before{content:"Cumpleaños de Angelina";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:"Playfair Display";font-size:36px;color:white;text-align:center;text-shadow:0 0 10px #fff;}
@@ -26,17 +26,115 @@ canvas{position:fixed;top:0;left:0;z-index:-1;}
 .page{position:absolute;width:100%;height:100%;background:white;top:0;left:0;transform-origin:left;transition:transform 1.2s ease;border-radius:10px;box-shadow:inset -5px 0 20px rgba(0,0,0,0.2);}
 .book.open .page{transform:rotateY(-180deg);}
 
-/* HÉROE Y FOTOS */
-.birthday-hero{min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:50px 20px;}
-.birthday-hero img{width:400px;max-width:90%;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.2);animation:float 5s ease-in-out infinite;}
-.birthday-hero h1{font-family:"Playfair Display";font-size:48px;color:#ff2fb2;margin-bottom:20px;text-shadow:0 0 8px #fff;}
+/* --- NUEVA SECCIÓN HÉROE (CUMPLEAÑOS) --- */
+.birthday-hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 50px 20px;
+    overflow: hidden; /* Para que la lluvia de 20s no se salga */
+}
 
+/* El Globo */
+.globo-20 {
+    width: 250px;
+    max-width: 80%;
+    border-radius: 20px;
+    position: relative;
+    z-index: 2;
+    transition: filter 0.5s ease;
+    /* Levita por defecto */
+    animation: levitate 4s ease-in-out infinite;
+}
+@keyframes levitate {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+/* Efecto de brillos intensos solo cuando la sección está activa */
+.active-section .globo-20 {
+    animation: levitate 4s ease-in-out infinite, globoBrillo 2s infinite alternate;
+}
+@keyframes globoBrillo {
+    0% { filter: drop-shadow(0 0 10px #ff2fb2) drop-shadow(0 0 20px rgba(255,255,255,0.8)); }
+    100% { filter: drop-shadow(0 0 25px #ff2fb2) drop-shadow(0 0 45px #ff66c1); }
+}
+
+/* Textos */
+.sub-text {
+    font-family: "Poppins", sans-serif;
+    font-size: 26px;
+    color: #cc3366;
+    margin: 20px 0 10px 0;
+    z-index: 2;
+    position: relative;
+    font-weight: 600;
+}
+.big-wink {
+    font-size: 55px; /* Guiño gigante */
+    vertical-align: middle;
+    display: inline-block;
+    animation: winkPulse 2s infinite;
+}
+@keyframes winkPulse {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(10deg); }
+}
+
+.main-text {
+    font-family: "Playfair Display", serif;
+    font-size: 65px; /* Súper grande */
+    color: #ff2fb2;
+    margin-bottom: 25px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 5px #ff2fb2;
+    z-index: 2;
+    position: relative;
+    line-height: 1.1;
+}
+
+.foto-peligrosa {
+    width: 350px;
+    max-width: 90%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 2;
+    position: relative;
+    border: 3px solid #ffb3e6;
+}
+
+/* Lluvia de 20s */
+.shiny-20-drop {
+    position: absolute;
+    top: -50px;
+    color: #ff2fb2;
+    font-weight: bold;
+    font-size: 28px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 0 20px #ff2fb2;
+    animation: dropDown20 linear forwards;
+    z-index: 1;
+    pointer-events: none;
+    user-select: none;
+}
+@keyframes dropDown20 {
+    to { transform: translateY(110vh) rotate(360deg); }
+}
+
+@media(max-width:700px){
+    .main-text { font-size: 45px; }
+    .sub-text { font-size: 20px; }
+    .big-wink { font-size: 40px; }
+    .globo-20 { width: 200px; }
+}
+
+/* OUTFITS */
 .invitation{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;position:relative;}
 .invitation img{width:700px;max-width:90%;animation:float 6s ease-in-out infinite;filter:drop-shadow(0 0 15px silver);position:relative;z-index:2;}
 .invitation::after{content:"";position:absolute;top:-50px;left:-50px;width:calc(100%+100px);height:calc(100%+100px);background:radial-gradient(circle,#fff0,#fff);border-radius:20px;animation:glimmer 2s infinite alternate;}
 @keyframes glimmer{0%{filter:blur(0px);}100%{filter:blur(8px);}}
 
-/* OUTFITS */
 .outfits{display:flex;flex-wrap:wrap;justify-content:center;gap:50px;margin-top:80px;}
 .card{width:320px;background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);border-radius:20px;border:2px solid silver;box-shadow:0 15px 40px rgba(0,0,0,0.15);padding:20px;text-align:center;transition:0.4s;opacity:0;transform:translateY(40px);}
 .card.show{opacity:1;transform:translateY(0);}
@@ -56,6 +154,42 @@ canvas{position:fixed;top:0;left:0;z-index:-1;}
 .info-card h3{color:#cc3366; margin-bottom:10px;}
 .info-card p{font-size:18px; font-weight:bold;}
 
+/* SECCIÓN CONFIRMACIÓN */
+.confirmation-section {padding: 80px 20px; text-align: center; position: relative;}
+.confirm-box {
+    max-width: 600px; margin: 0 auto; background: rgba(255,255,255,0.9); 
+    padding: 40px; border-radius: 30px; border: 3px solid #ff2fb2;
+    box-shadow: 0 15px 45px rgba(255, 47, 178, 0.2);
+}
+.confirm-box h2 { font-family: "Playfair Display"; color: #ff2fb2; margin-bottom: 20px; font-size: 32px; }
+.itinerary { text-align: left; margin: 20px 0 40px 0; }
+.itinerary li { list-style: none; font-size: 18px; margin: 12px 0; color: #cc3366; }
+.itinerary li::before { content: "✨ "; }
+
+.btn-wrap { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    gap: 20px; 
+    min-height: 120px; 
+    position: relative; 
+    max-width: 500px; 
+    margin: 0 auto;
+}
+.btn-confirm {
+    padding: 18px 30px; 
+    border-radius: 50px; 
+    border: none; 
+    font-weight: bold; 
+    font-size: 18px; 
+    cursor: pointer; 
+    transition: 0.3s;
+    flex: 1; 
+}
+.btn-si { background: #ff2fb2; color: white; box-shadow: 0 5px 15px rgba(255,47,178,0.4); order: 2; }
+.btn-si:hover { transform: scale(1.05); background: #ff66c1; }
+.btn-no { background: #ff2fb2; color: white; box-shadow: 0 5px 15px rgba(255,47,178,0.4); position: relative; z-index: 100; order: 1; }
+
 /* SECCIÓN JUEGOS PULIDA */
 .game-section{min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px;}
 .game-section h1{font-family:"Playfair Display";font-size:42px;color:#ff2fb2;margin-bottom:10px; text-shadow:0 0 10px rgba(255,47,178,0.3);}
@@ -65,7 +199,6 @@ canvas{position:fixed;top:0;left:0;z-index:-1;}
 .game-btn.active {background: #ff2fb2; color: white; border-color: #ff2fb2; box-shadow: 0 0 15px #ff2fb2;}
 #score{font-size:28px; margin-bottom: 15px; color:#ff2fb2; font-weight:bold; transition: transform 0.2s;}
 
-/* CONTENEDOR DEL JUEGO NEÓN/GLASSMORPHISM */
 #game-area{
     position:relative; width:100%; max-width:800px; height:420px; 
     background:rgba(255, 224, 247, 0.6); backdrop-filter:blur(5px);
@@ -106,64 +239,97 @@ canvas{position:fixed;top:0;left:0;z-index:-1;}
 @keyframes polaroidFloat{0%{transform:rotate(-10deg) translateY(0);}50%{transform:rotate(10deg) translateY(-20px);}100%{transform:rotate(-10deg) translateY(0);}}
 
 @media(max-width:700px){
-.outfits{flex-direction:column;align-items:center;}
-.book{width:260px;height:360px;}
-.bratz video{width:90px;}
-.nokia img{width:60px;}
-.polaroid{width:60px;}
-.birthday-hero img{width:250px;}
-.birthday-hero h1{font-size:32px;}
-#game-area{height:380px;}
-.memory-card-front, .memory-card-back {font-size: 28px;}
+    .btn-wrap { flex-direction: column; gap: 10px; }
+    .btn-confirm { width: 100%; }
+    .outfits{flex-direction:column;align-items:center;}
+    .book{width:260px;height:360px;}
+    .bratz video{width:90px;}
+    .nokia img{width:60px;}
+    .polaroid{width:60px;}
+    #game-area{height:380px;}
+    .memory-card-front, .memory-card-back {font-size: 28px;}
 }
 </style>
 </head>
 <body>
 <canvas id="glitter"></canvas>
-<section class="book-section"><div class="book" id="book"><div class="page"></div></div></section>
-<section class="birthday-hero"><h1>¡Es el cumpleaños de La Peligrosa!</h1><img src="lapeligrosa.jpeg" alt="La Peligrosa"></section>
-<section class="invitation"><img src="micumple.png">
-<div class="outfits">
-<div class="card">
-<h2>Outfit para chicos</h2>
-<img src="hombres.png">
-<p>Consejito: evita rojo, ¡que la cumpleañera destaque!</p>
-<a href="https://es.pinterest.com/search/pins/?q=Styl%202000%20y2k%20fiestas%20men&rs=typed" target="_blank">Clic para inspiración</a>
-</div>
-<div class="card">
-<h2>Outfit para chicas</h2>
-<img src="mujeres.png">
-<p>Consejito: intenta no usar rojo, para que la cumpleañera brille 💖</p>
-<a href="https://es.pinterest.com/search/pins/?q=Styl%202000%20y2k%20fiestas%20mujer&rs=typed" target="_blank">Clic para inspiración</a>
-</div>
-</div>
-</section>
-<section class="party-info"><h1>Detalles de la Fiesta</h1>
-<div class="info-grid">
-<div class="info-card"><h3>📅 Fecha</h3><p>22 de Julio</p></div>
-<div class="info-card"><h3>📍 Lugar</h3><p>casa de gabias, Granada</p></div>
-<div class="info-card"><h3>⏰ Hora</h3><p>10:30</p></div>
-</div></section>
 
-<section class="party-info"><h1>NO OLVIDEN SU DETALLE💋😉</h1>
-<div class="info-grid">
-</div></section>
+<section class="book-section">
+    <div class="book" id="book"><div class="page"></div></div>
+</section>
+
+<section class="birthday-hero" id="birthday-hero">
+    <img src="20.jpg" alt="Globo 20 años" class="globo-20">
+    <h2 class="sub-text">20 no se cumplen todos los días <span class="big-wink">😉</span></h2>
+    
+    <h1 class="main-text">¡Es el cumpleaños de<br>La Peligrosa!</h1>
+    <img src="lapeligrosa.jpeg" alt="La Peligrosa" class="foto-peligrosa">
+</section>
+
+<section class="invitation">
+    <img src="micumple.png" style="width: 100%; max-width: 500px; margin-bottom: 20px;">
+    <div class="outfits">
+        <div class="card">
+            <h2>Outfit para chicos</h2>
+            <img src="hombres.png">
+            <p>Consejito: evita rojo, ¡que la cumpleañera destaque!</p>
+            <a href="https://es.pinterest.com/search/pins/?q=Styl%202000%20y2k%20fiestas%20men&rs=typed" target="_blank">Clic para inspiración</a>
+        </div>
+        <div class="card">
+            <h2>Outfit para chicas</h2>
+            <img src="mujeres.png">
+            <p>Consejito: intenta no usar rojo, para que la cumpleañera brille 💖</p>
+            <a href="https://es.pinterest.com/search/pins/?q=Styl%202000%20y2k%20fiestas%20mujer&rs=typed" target="_blank">Clic para inspiración</a>
+        </div>
+    </div>
+</section>
+
+<section class="party-info">
+    <h1>Detalles de la Fiesta</h1>
+    <div class="info-grid">
+        <div class="info-card"><h3>📅 Fecha</h3><p>22 de Julio</p></div>
+        <div class="info-card"><h3>📍 Lugar</h3><p>casa de gabias, Granada</p></div>
+        <div class="info-card"><h3>⏰ Hora</h3><p>22:30pm</p></div>
+    </div>
+</section>
+
+<section class="confirmation-section">
+    <div class="confirm-box">
+        <h2>¿Te lo vas a perder? 👄</h2>
+        <div class="itinerary">
+            <h3>Lo que haremos:</h3>
+            <ul>
+                <li>Drinks & Pica-Pica Y2K</li>
+                <li>Sesión de fotos "La Peligrosa Style"</li>
+                <li>Mucho perreo y 2000's hits</li>
+                <li>Soplar las velas con Angie</li>
+            </ul>
+        </div>
+        
+        <p style="margin-bottom: 20px; font-weight: bold; color: #ff2fb2; font-size: 22px;">NO OLVIDEN SU DETALLE💋😉</p>
+        
+        <div class="btn-wrap">
+            <button class="btn-confirm btn-no" id="btnNo">No puedo ir... 😢</button>
+            <button class="btn-confirm btn-si" id="btnSi">SÍ, ALLÍ ESTARÉ ✨</button>
+        </div>
+    </div>
+</section>
 
 <section class="game-section">
-<h1>Mini-Juegos Y2K 🎉</h1>
-<p style="margin-bottom: 20px; color:#cc3366; font-size: 18px;">¡Juega a todos y acumula puntos antes de compartir!</p>
+    <h1>Mini-Juegos Y2K 🎉</h1>
+    <p style="margin-bottom: 20px; color:#cc3366; font-size: 18px;">¡Juega a todos y acumula puntos antes de compartir!</p>
 
-<div class="game-controls">
-    <button class="game-btn active" onclick="startGame(1, this)">💋 Lluvia de Besos</button>
-    <button class="game-btn" onclick="startGame(2, this)">🚫 Evita el Rojo</button>
-    <button class="game-btn" onclick="startGame(3, this)">📱 Dale al Nokia</button>
-    <button class="game-btn" onclick="startGame(4, this)">🧠 Memoria Y2K</button>
-    <button class="game-btn" onclick="startGame(5, this)">👑 Atrapa la Corona</button>
-</div>
+    <div class="game-controls">
+        <button class="game-btn active" onclick="startGame(1, this)">💋 Lluvia de Besos</button>
+        <button class="game-btn" onclick="startGame(2, this)">🚫 Evita el Rojo</button>
+        <button class="game-btn" onclick="startGame(3, this)">📱 Dale al Nokia</button>
+        <button class="game-btn" onclick="startGame(4, this)">🧠 Memoria Y2K</button>
+        <button class="game-btn" onclick="startGame(5, this)">👑 Atrapa la Corona</button>
+    </div>
 
-<p id="score">Puntuación total: 0</p>
-<div id="game-area"></div>
-<button class="share-btn" id="shareBtn">📲 Compartir mi récord por WhatsApp</button>
+    <p id="score">Puntuación total: 0</p>
+    <div id="game-area"></div>
+    <button class="share-btn" id="shareBtn">📲 Compartir mi récord por WhatsApp</button>
 </section>
 
 <div id="youtube-player" style="display: none;"></div>
@@ -174,35 +340,110 @@ canvas{position:fixed;top:0;left:0;z-index:-1;}
 <div class="polaroid" style="top:40%;left:70%;animation:polaroidFloat 8s infinite alternate;"><img src="micumple.png"></div>
 <div class="polaroid" style="top:70%;left:30%;animation:polaroidFloat 10s infinite alternate;"><img src="micumple.png"></div>
 
+<audio id="musica" src="cancion.mp3" preload="auto"></audio>
+
 <script>
-// BOOK OPEN
-const book=document.getElementById("book");
-book.addEventListener("click",()=>{book.classList.add("open");setTimeout(()=>{window.scrollTo({top:window.innerHeight,behavior:"smooth"})},800);})
+// ==========================================
+// 1. LÓGICA DEL LIBRO (Se mantiene igual)
+// ==========================================
+const book = document.getElementById("book");
+book.addEventListener("click", () => {
+    book.classList.add("open");
+    setTimeout(() => { window.scrollTo({ top: window.innerHeight, behavior: "smooth" }) }, 800);
+});
 
-// SCROLL ANIMATION
-const cards=document.querySelectorAll(".card");
-const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("show")}})});
-cards.forEach(card=>{observer.observe(card)})
+// SCROLL ANIMATION PARA LAS CARTAS
+const cards = document.querySelectorAll(".card");
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("show") } })
+});
+cards.forEach(card => { observer.observe(card) });
 
-// PARTICLES + ESTRELLAS (Optimizado)
-const canvas=document.getElementById("glitter");
-const ctx=canvas.getContext("2d");
-function resizeCanvas() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+// ==========================================
+// 2. NUEVA LÓGICA: LLUVIA DE 20s (INTERSECTION OBSERVER)
+// ==========================================
+const heroSection = document.getElementById('birthday-hero');
+let rain20Interval;
+
+function createShiny20() {
+    const twenty = document.createElement('div');
+    twenty.classList.add('shiny-20-drop');
+    // Alternamos entre texto y emojis para más variedad
+    twenty.innerHTML = Math.random() < 0.5 ? '20✨' : '💖20';
+    twenty.style.left = Math.random() * 90 + '%';
+    twenty.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    
+    heroSection.appendChild(twenty);
+    
+    // Lo eliminamos cuando termina la animación
+    setTimeout(() => {
+        if(twenty.parentElement) twenty.remove();
+    }, 4500);
+}
+
+const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Activa los brillos del globo y empieza la lluvia
+            heroSection.classList.add('active-section');
+            rain20Interval = setInterval(createShiny20, 300); // Lluvia intensa
+        } else {
+            // Apaga los brillos, para el intervalo y limpia los "20s" actuales
+            heroSection.classList.remove('active-section');
+            clearInterval(rain20Interval);
+            heroSection.querySelectorAll('.shiny-20-drop').forEach(el => el.remove());
+        }
+    });
+}, { threshold: 0.1 }); // Se activa en cuanto la sección entra un poco en pantalla
+
+heroObserver.observe(heroSection);
+
+// ==========================================
+// 3. LÓGICA DEL BOTÓN QUE HUYE
+// ==========================================
+const btnNo = document.getElementById("btnNo");
+const btnSi = document.getElementById("btnSi");
+
+const moverBoton = () => {
+    const x = Math.random() * (window.innerWidth - btnNo.clientWidth);
+    const y = Math.random() * (window.innerHeight - btnNo.clientHeight);
+    btnNo.style.position = "fixed";
+    btnNo.style.left = `${x}px`;
+    btnNo.style.top = `${y}px`;
+};
+
+btnNo.addEventListener("mouseover", moverBoton);
+btnNo.addEventListener("touchstart", (e) => {
+    e.preventDefault(); 
+    moverBoton();
+});
+
+btnSi.addEventListener("click", () => {
+    for(let i=0; i<30; i++) { createKiss(); }
+    alert("¡SIII! Sabía que no me fallarías reina 💖");
+    const msj = encodeURIComponent("¡Acepto señora Angie! 💋 Allí estaré dándolo todo.");
+    window.open(`https://wa.me/34635387827?text=${msj}`, '_blank');
+});
+
+// PARTICULAS FONDO GENERAL
+const canvas = document.getElementById("glitter");
+const ctx = canvas.getContext("2d");
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
-let particles=[];
-for(let i=0;i<120;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2+1,speed:Math.random()*0.5,type:Math.random()<0.3?'star':'glitter'})}
-function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{ctx.fillStyle=(p.type==='star'?'rgba(255,255,255,0.9)':'rgba(255,182,225,0.6)');ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();p.y-=p.speed;if(p.y<0){p.y=canvas.height;p.x=Math.random()*canvas.width}});requestAnimationFrame(animate)}
-animate()
+let particles = [];
+for (let i = 0; i < 120; i++) { particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2 + 1, speed: Math.random() * 0.5, type: Math.random() < 0.3 ? 'star' : 'glitter' }) }
+function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { ctx.fillStyle = (p.type === 'star' ? 'rgba(255,255,255,0.9)' : 'rgba(255,182,225,0.6)'); ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); p.y -= p.speed; if (p.y < 0) { p.y = canvas.height; p.x = Math.random() * canvas.width } }); requestAnimationFrame(animate) }
+animate();
 
 // BESOS GLOBALES (Decorativos)
-function createKiss(){const kiss=document.createElement("div");kiss.classList.add("kiss");kiss.innerHTML="💋";kiss.style.left=Math.random()*100+"vw";kiss.style.bottom="120px";document.body.appendChild(kiss);setTimeout(()=>{kiss.remove()},3000)}
-setInterval(createKiss,2500)
+function createKiss() { const kiss = document.createElement("div"); kiss.classList.add("kiss"); kiss.innerHTML = "💋"; kiss.style.left = Math.random() * 100 + "vw"; kiss.style.bottom = "120px"; document.body.appendChild(kiss); setTimeout(() => { kiss.remove() }, 3000) }
+setInterval(createKiss, 2500);
 
 
-/* =========================================
-   SISTEMA DE MINI-JUEGOS EFICIENTE
-========================================= */
+// ==========================================
+// 4. SISTEMA DE MINI-JUEGOS EFICIENTE
+// ==========================================
 const gameArea = document.getElementById('game-area');
 const scoreDisplay = document.getElementById('score');
 let score = 0;
@@ -250,7 +491,7 @@ function clearGameArea() {
 function addGameInterval(fn, time) { const id = setInterval(fn, time); activeIntervals.push(id); return id; }
 function addGameTimeout(fn, time) { const id = setTimeout(fn, time); activeTimeouts.push(id); return id; }
 
-// JUEGOS
+// JUEGO 1
 function startJuego1() {
     addGameInterval(() => {
         const heart = document.createElement('div');
@@ -258,17 +499,13 @@ function startJuego1() {
         heart.innerHTML = '💋';
         heart.style.left = Math.random() * (gameArea.clientWidth - 50) + 'px';
         heart.style.animationDuration = (Math.random() * 2 + 2) + 's'; 
-        
-        heart.addEventListener('mousedown', (e) => {
-            updateScore(10, e);
-            heart.remove();
-        });
-        
+        heart.addEventListener('mousedown', (e) => { updateScore(10, e); heart.remove(); });
         gameArea.appendChild(heart);
         addGameTimeout(() => heart.remove(), 4000); 
     }, 700);
 }
 
+// JUEGO 2
 function startJuego2() {
     const info = document.createElement('div');
     info.innerHTML = "¡Caza el rosa 💖, esquiva el rojo 🔴!";
@@ -284,21 +521,17 @@ function startJuego2() {
         item.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
 
         item.addEventListener('mousedown', (e) => {
-            if(isRed) { 
-                updateScore(-15, e); 
-                item.innerHTML = '❌'; 
-            } else { 
-                updateScore(15, e); 
-            }
+            if(isRed) { updateScore(-15, e); item.innerHTML = '❌'; } 
+            else { updateScore(15, e); }
             item.style.pointerEvents = 'none';
             setTimeout(() => item.remove(), 200);
         });
-        
         gameArea.appendChild(item);
         addGameTimeout(() => { if(gameArea.contains(item)) item.remove(); }, 4000);
     }, 600);
 }
 
+// JUEGO 3
 function startJuego3() {
     let timeLeft = 10;
     gameArea.innerHTML = `
@@ -306,7 +539,6 @@ function startJuego3() {
         <div id="nokia-click" style="font-size:90px; cursor:pointer; user-select:none; transition:transform 0.05s; filter:drop-shadow(0 10px 10px rgba(0,0,0,0.2));">📱</div>
         <div style="font-size:16px; color:#cc3366; margin-top:20px; font-weight:bold;">¡Rómpelo a clics!</div>
     `;
-    
     const nokiaBtn = document.getElementById('nokia-click');
     const timerDisplay = document.getElementById('nokia-timer');
     let gameActive = true;
@@ -330,6 +562,7 @@ function startJuego3() {
     }, 1000);
 }
 
+// JUEGO 4
 function startJuego4() {
     const emojis = ['💿','💿','📸','📸','💄','💄','🦋','🦋'];
     emojis.sort(() => Math.random() - 0.5); 
@@ -340,9 +573,7 @@ function startJuego4() {
     gameArea.style.gap = '15px';
     gameArea.style.padding = '20px';
     
-    let hasFlippedCard = false;
-    let lockBoard = false;
-    let firstCard, secondCard;
+    let hasFlippedCard = false; let lockBoard = false; let firstCard, secondCard;
     
     emojis.forEach((emoji) => {
         const cardContainer = document.createElement('div');
@@ -356,37 +587,25 @@ function startJuego4() {
         cardContainer.addEventListener('click', function(e) {
             if (lockBoard) return;
             if (this === firstCard) return;
-
             this.classList.add('flip');
 
-            if (!hasFlippedCard) {
-                hasFlippedCard = true;
-                firstCard = this;
-                return;
-            }
+            if (!hasFlippedCard) { hasFlippedCard = true; firstCard = this; return; }
 
-            secondCard = this;
-            hasFlippedCard = false;
-            lockBoard = true;
+            secondCard = this; hasFlippedCard = false; lockBoard = true;
 
             if (firstCard.dataset.icon === secondCard.dataset.icon) {
                 updateScore(40, e);
-                firstCard.style.pointerEvents = 'none';
-                secondCard.style.pointerEvents = 'none';
+                firstCard.style.pointerEvents = 'none'; secondCard.style.pointerEvents = 'none';
                 lockBoard = false;
             } else {
-                setTimeout(() => {
-                    firstCard.classList.remove('flip');
-                    secondCard.classList.remove('flip');
-                    lockBoard = false;
-                }, 800);
+                setTimeout(() => { firstCard.classList.remove('flip'); secondCard.classList.remove('flip'); lockBoard = false; }, 800);
             }
         });
-        
         gameArea.appendChild(cardContainer);
     });
 }
 
+// JUEGO 5
 function startJuego5() {
     gameArea.style.display = 'grid';
     gameArea.style.gridTemplateColumns = 'repeat(3, 1fr)';
@@ -399,34 +618,23 @@ function startJuego5() {
         const hole = document.createElement('div');
         hole.style.background = 'rgba(255, 255, 255, 0.5)';
         hole.style.borderRadius = '20px';
-        hole.style.display = 'flex';
-        hole.style.alignItems = 'center';
-        hole.style.justifyContent = 'center';
-        hole.style.boxShadow = 'inset 0 5px 15px rgba(0,0,0,0.1)';
-        hole.style.border = '2px dashed #ffb3e6';
-        gameArea.appendChild(hole);
-        holes.push(hole);
+        hole.style.display = 'flex'; hole.style.alignItems = 'center'; hole.style.justifyContent = 'center';
+        hole.style.boxShadow = 'inset 0 5px 15px rgba(0,0,0,0.1)'; hole.style.border = '2px dashed #ffb3e6';
+        gameArea.appendChild(hole); holes.push(hole);
     }
 
     addGameInterval(() => {
         holes.forEach(h => h.innerHTML = ''); 
-        
         const hole = holes[Math.floor(Math.random() * holes.length)];
         const crown = document.createElement('div');
-        crown.innerHTML = '👑';
-        crown.style.fontSize = '55px';
-        crown.style.cursor = 'pointer';
-        crown.style.transition = 'transform 0.1s';
-        
-        crown.style.transform = 'scale(0)';
-        setTimeout(() => crown.style.transform = 'scale(1)', 10);
+        crown.innerHTML = '👑'; crown.style.fontSize = '55px'; crown.style.cursor = 'pointer'; crown.style.transition = 'transform 0.1s';
+        crown.style.transform = 'scale(0)'; setTimeout(() => crown.style.transform = 'scale(1)', 10);
         
         crown.addEventListener('mousedown', (e) => {
             updateScore(20, e);
             hole.innerHTML = '<span style="font-size:40px;">✨</span>';
             setTimeout(() => hole.innerHTML = '', 300);
         });
-        
         hole.appendChild(crown);
         
         addGameTimeout(() => {
@@ -435,7 +643,6 @@ function startJuego5() {
                 setTimeout(() => { if(hole.contains(crown)) hole.innerHTML = ''; }, 100);
             }
         }, 900);
-        
     }, 1200);
 }
 
@@ -443,16 +650,19 @@ function startGame(gameId, btnElement) {
     clearGameArea();
     document.querySelectorAll('.game-btn').forEach(btn => btn.classList.remove('active'));
     if(btnElement) btnElement.classList.add('active');
-    
-    if(gameId === 1) startJuego1();
-    if(gameId === 2) startJuego2();
-    if(gameId === 3) startJuego3();
-    if(gameId === 4) startJuego4();
-    if(gameId === 5) startJuego5();
+    if(gameId === 1) startJuego1(); if(gameId === 2) startJuego2(); if(gameId === 3) startJuego3(); if(gameId === 4) startJuego4(); if(gameId === 5) startJuego5();
 }
 
-/* --- CONFIGURACIÓN DE MÚSICA DE YOUTUBE --- */
-// Cargamos la API de iframe de YouTube de forma asíncrona
+// INICIAR DE BASE Y COMPARTIR
+startGame(1, document.querySelector('.game-btn'));
+document.getElementById('shareBtn').addEventListener('click',()=>{
+  const text=`¡Mi récord jugando en la invitación de La Peligrosa es de ${score} puntos! 👑✨`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank');
+});
+
+// ==========================================
+// 5. AUDIO Y YOUTUBE API
+// ==========================================
 var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -461,42 +671,18 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('youtube-player', {
-        height: '0', 
-        width: '0',
-        videoId: 'C-u5WLJ9Yk4',
-        playerVars: { 
-            'autoplay': 0, // Inicia pausado para evitar bloqueos del navegador
-            'loop': 1, 
-            'playlist': 'C-u5WLJ9Yk4',
-            'start': 15 // ¡Empieza exactamente en el segundo 15!
-        },
-        events: { 
-            'onReady': function(event) {
-                event.target.setVolume(20); // Volumen bajito, al 20
-            } 
-        }
+        height: '0', width: '0', videoId: 'C-u5WLJ9Yk4',
+        playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'C-u5WLJ9Yk4', 'start': 15 },
+        events: { 'onReady': function(event) { event.target.setVolume(20); } }
     });
 }
 
-// Iniciar música tras la primera interacción del usuario con la página (Click)
-// Esto es súper importante porque Chrome/Safari bloquean el audio automático.
+const musica = document.getElementById('musica');
+musica.volume = 0.2;
 document.body.addEventListener('click', () => {
-    if (player && typeof player.playVideo === 'function') {
-        let state = player.getPlayerState();
-        if (state !== 1) { // Si no se está reproduciendo ya...
-            player.playVideo();
-        }
-    }
-}, { once: true });
+    if(musica.paused){musica.currentTime=139; musica.play().catch(e=>console.log("No se pudo reproducir: ", e));}
+},{once:true});
 
-// Iniciar por defecto
-startGame(1, document.querySelector('.game-btn'));
-
-// Botón WhatsApp
-document.getElementById('shareBtn').addEventListener('click',()=>{
-  const text=`¡Mi récord jugando en la invitación de La Peligrosa es de ${score} puntos! 👑✨`;
-  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank');
-});
 </script>
 </body>
 </html>
